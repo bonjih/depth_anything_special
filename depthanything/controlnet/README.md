@@ -2,7 +2,7 @@
 
 We use [Diffusers](https://github.com/huggingface/diffusers/tree/main) to re-train a better depth-conditioned ControlNet based on our Depth Anything.
 
-Please download our [config file](./config.json) and [pre-trained weights](https://huggingface.co/spaces/LiheYoung/Depth-Anything/tree/main/checkpoints_controlnet), then follow the [instructions](https://github.com/huggingface/diffusers/tree/main/examples/controlnet) in Diffusers for inference. 
+Please download our [config file](config.json) and [pre-trained weights](https://huggingface.co/spaces/LiheYoung/Depth-Anything/tree/main/checkpoints_controlnet), then follow the [instructions](https://github.com/huggingface/diffusers/tree/main/examples/controlnet) in Diffusers for inference. 
 
 ## Depth-to-Image Synthesis
 

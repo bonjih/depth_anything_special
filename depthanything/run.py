@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from torchvision.transforms import Compose
 from tqdm import tqdm
 
-from depth_anything.dpt import DepthAnything
+from depthanything.depth_anything.dpt import DepthAnything
 from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
 
 

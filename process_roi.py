@@ -5,7 +5,7 @@ import torch
 import numpy as np
 from PIL import Image
 from torchvision.transforms import Compose
-from depth_anything.dpt import DepthAnything
+from depthanything.depth_anything.dpt import DepthAnything
 from dust_detect import detect_blur_fft
 from vid_lables import timestamp, draw_roi_poly
 from depth_anything.util.transform import Resize, NormalizeImage, PrepareForNet
