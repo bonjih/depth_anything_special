@@ -1,0 +1,70 @@
+{
+    "input_video_path": "crusher_bin_bridge2.mkv",
+    "output_video_path": "output/crusher_bin_bridge_4.mkv",
+    "output_image_path": "images/",
+    "output_audit_path": "output/audit_data.csv",
+    "output_video": "output_video",
+    "is_watching": true,
+    "is_save_video": true,
+    "offset": 600,
+    "audit_results": true,
+    "motion_offset": 1,
+
+    "roi_coords": {
+        "roi_1": {
+            "x1": 390,
+            "y1": 414,
+            "x2": 519,
+            "y2": 422,
+            "x3": 732,
+            "y3": 471,
+            "x4": 618,
+            "y4": 596,
+            "x5": 460,
+            "y5": 572,
+            "x6": 412,
+            "y6": 514,
+            "x7": 390,
+            "y7": 414
+        },
+            "roi_2": {
+            "x1": 608,
+            "y1": 230,
+            "x2": 729,
+            "y2": 274,
+            "x3": 777,
+            "y3": 338,
+            "x4": 753,
+            "y4": 388,
+            "x5": 656,
+            "y5": 390,
+            "x6": 612,
+            "y6": 358,
+            "x7": 565,
+            "y7": 356,
+            "x8": 514,
+            "y8": 347,
+            "x9": 501,
+            "y9": 301,
+            "x10": 534,
+            "y10": 246,
+            "x11": 608,
+            "y11": 230
+            }
+
+
+    },
+    "thresholds": {
+        "daytime": {
+            "sum_features": 13,
+            "max_window_val": 10
+        }
+    },
+        "dust": {
+            "size": 60,
+            "thresh": 2
+    },
+    "change_window": {
+            "size": 10
+    }
+}
