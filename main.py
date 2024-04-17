@@ -1,6 +1,7 @@
 import os
 
 from RoiMultiClass import ComposeROI
+from video_streamer import VideoProcessor
 import global_params_variables
 
 
@@ -29,7 +30,11 @@ def main():
     is_save_video = params.get_value('is_save_video')
     offset = params.get_value('offset')
 
-
+    video_processor = VideoProcessor(video_path, output_path_vid, output_path_img, roi_config,
+                                     is_watching=is_watching,
+                                     is_save_video=is_save_video,
+                                     offset=offset)
+    video_processor.process_video()
 
 
 if __name__ == '__main__':
