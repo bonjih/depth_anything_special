@@ -98,9 +98,12 @@ class FrameProcessor:
 
             if len(depth_sequence) >= deque_size:
                 audit_list = trend_depth(depth_sequence)
-                audit_means = calculate_audit_means(audit_list)
-                for roi_keys, means in audit_means.items():
-                    bridge_text = f"{roi_keys}: [{means[0]:.6f} {means[1]:.6f}]"
+
+                for audit in audit_list:
+                    make_csv(audit)
+                    if audit[3] >= 0:
+                        bridge_text = f"{roi_key}: [{audit[2]:.2f} {audit[3]:.2f}]"
+                        break  # Break the loop if audit[3] is >= 0 for any ROI
 
             depth = (depth - depth.min()) / (depth.max() - depth.min()) * 255.0
             depth = depth.cpu().numpy().astype(np.uint8)
