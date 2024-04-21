@@ -200,47 +200,35 @@ def compute_r_squared(depth_sequence, time_interval):
 
 
 def trend_depth(depth_sequence):
-    trend = 0
-    key = None
-    audit_data = []
+    trend = {}
+    audit_data = {}
 
-
-    # print()
-    # print(list(depth_sequence[0][2]))
-    for i, (prediction, ts, roi_key) in enumerate(depth_sequence):
-        # Calculate mean depth values over time
+    for entry in depth_sequence:
+        prediction, ts, roi = entry
+        ts = ts / 1000
         mean_depth = torch.mean(prediction).item()
-        print(depth_sequence[0][1], depth_sequence[0][2])
-        # Calculate the trend of mean depth values
-        if i > 0:
-            prev_mean_depth = torch.mean(depth_sequence[i - 1][0]).item()  # Access the previous prediction
-            time_diff = (ts - depth_sequence[i - 1][1]) / 1000  # Convert time difference to seconds
-            key = depth_sequence[i - 1][2]
 
-            if time_diff > 0:
-                trend = (mean_depth - prev_mean_depth) / time_diff
+        if roi not in trend:
+            trend[roi] = 0
+            audit_data[roi] = []  # Initialize list for ROI
 
-            else:
-                trend = 0  # Set trend to 0 for the first data point
+        trend_diff = mean_depth - trend[roi]
 
-        audit_data.append([i, key, ts, mean_depth, trend])
+        if trend_diff > 0:
+            trend_value = trend_diff
+        elif trend_diff < 0:
+            trend_value = trend_diff
+        else:
+            trend_value = 0  # No change
 
-    result = pd.DataFrame(audit_data)
-    result = pd.concat([result])
-    #print(result)
+        audit_data[roi].append((roi, ts, mean_depth, trend_value))
+        trend[roi] = mean_depth  # Update trend for next iteration
 
-        # Create a DataFrame for the current iteration
-    # df = pd.DataFrame({
-    #     'Time Step': i,
-    #     'roi': key,
-    #     'Time (s)': ts,
-    #     'Mean Depth': mean_depth,
-    #     'Trend': trend
-    # }, index=[0])  # Each iteration's DataFrame contains only one row
+    # Concatenate lists for each ROI into a single list
+    merged_data = [entry for roi_data in audit_data.values() for entry in roi_data]
 
-    #
-    #
-    # result = pd.concat(audit_data)
-    #
-    #
-    #     make_csv(result)
+    df = pd.DataFrame(merged_data, columns=['ROI', 'Time (s)', 'Mean Depth', 'Trend'])
+
+    return merged_data
+
+
