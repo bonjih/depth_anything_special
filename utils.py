@@ -71,3 +71,29 @@ def create_rectangle_array(cX, cY):
     rectangle[startY:endY + 1, startX:endX + 1] = 1
 
     return rectangle_coordinates
+
+
+def calculate_audit_means(audit_list):
+    roi_data = {}
+
+    for audit in audit_list:
+        roi_key = audit[0]
+        audit_2 = audit[2]
+        audit_3 = audit[3]
+
+        if roi_key not in roi_data:
+            roi_data[roi_key] = {'audit_2_sum': 0, 'audit_3_sum': 0, 'count': 0}
+
+        roi_data[roi_key]['audit_2_sum'] += audit_2
+        roi_data[roi_key]['audit_3_sum'] += audit_3
+        roi_data[roi_key]['count'] += 1
+
+    roi_means = {}
+
+    for roi_key, data in roi_data.items():
+        if data['count'] > 0:
+            audit_2_mean = data['audit_2_sum'] / data['count']
+            audit_3_mean = data['audit_3_sum'] / data['count']
+            roi_means[roi_key] = (audit_2_mean, audit_3_mean)
+
+    return roi_means
