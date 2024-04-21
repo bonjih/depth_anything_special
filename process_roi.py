@@ -55,14 +55,14 @@ class FrameProcessor:
         self.motion_start_frame = {key: 0 for key in roi_comp.rois}
         self.output_dir = output_dir
 
-    def process_frame(self, raw_frame, transform, depth_anything, DEVICE, frame_height, frame_width, prev_frame, ts):
+        def process_frame(self, raw_frame, transform, depth_anything, DEVICE, frame_height, frame_width, prev_frame, ts):
         mean, dusty = detect_blur_fft(raw_frame)
         # display labels on output video
         dusty_labels(raw_frame, mean, dusty)
         timestamp(raw_frame, ts)
         depth_sts = []
         depth_mean = []
-
+        bridge_text = ""
         r_sqr = 0
 
         text_y = 50
@@ -96,14 +96,13 @@ class FrameProcessor:
 
             depth_sequence.append([depth, ts, roi_key])
 
-            trend_depth(depth_sequence)
+            if len(depth_sequence) >= deque_size:
+                audit_list = trend_depth(depth_sequence)
+                audit_means = calculate_audit_means(audit_list)
+                for roi_keys, means in audit_means.items():
+                    bridge_text = f"{roi_keys}: [{means[0]:.6f} {means[1]:.6f}]"
 
             depth = (depth - depth.min()) / (depth.max() - depth.min()) * 255.0
-
-            bridge_text = f"{roi_key}:    [{r_sqr * 1000}]"
-            cv2.putText(raw_frame, bridge_text, (10, text_y + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255),
-                        1)
-
             depth = depth.cpu().numpy().astype(np.uint8)
             depth_color = cv2.applyColorMap(depth, cv2.COLORMAP_INFERNO)
 
@@ -117,9 +116,9 @@ class FrameProcessor:
 
             # Update frame with depth map for ROI
             raw_frame[resized_mask != 0] = depth_resized[resized_mask != 0]
-            centre_labels(raw_frame, roi_key, cX, cY)
+            # centre_labels(raw_frame, roi_key, cX, cY)
 
-            #del transform
+            # del transform
             del depth
             gc.collect()
             text_y += 30
