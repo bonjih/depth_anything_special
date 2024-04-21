@@ -11,7 +11,21 @@ params = global_params_variables.ParamsDict()
 output_path_vid = params.get_value('output_video_path')
 
 
-def make_csv(data):
+
+def make_csv(entry):
+    with open('audit_data.csv', 'a', newline='') as csvfile:
+        fieldnames = ['ROI', 'TS(s)', 'Mean', 'Trend']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        if csvfile.tell() == 0:
+            writer.writeheader()
+
+        roi, ts, mean, trend = entry
+        print(roi, ts, mean, trend )
+        writer.writerow({'ROI': roi, 'TS(s)': ts, 'Mean': mean, 'Trend': trend})
+
+
+def make_csv2(data):
     if data is not None:
         os.makedirs(os.path.dirname(output_path_vid), exist_ok=True)
         file_empty = not os.path.exists(output_path_vid) or os.stat(output_path_vid).st_size == 0
